@@ -1,40 +1,27 @@
-import sys
+from sys import stdin
+input = stdin.readline
 
-input = sys.stdin.readline
-
-n = int(input().rstrip('\n'))
-solutions = list(map(int, input().rstrip('\n').split()))
-solutions.sort()
-
-def solve(solutions):
-    tmp = sys.maxsize
-    min_value = sys.maxsize
-    result = []
-
-    for i in range(len(solutions) - 2):
-        if i > 0 and solutions[i] == solutions[i - 1]:
-            continue
-        
-        left, right = i + 1, len(solutions) - 1
+def solve(arr):
+    
+    ret_val = [0, 1, 2]
+    min_val = float('inf')
+    for i in range(len(arr) - 2):
+        base = arr[i]
+        left, right = i + 1, len(arr) - 1
         while left < right:
-            tmp = solutions[i] + solutions[left] + solutions[right]
-            
-            if abs(tmp) < abs(min_value):
-                result = [solutions[i], solutions[left], solutions[right]]
-                min_value = tmp
-
-            if tmp < 0:
+            val = base + arr[left] + arr[right]
+            if abs(val) < min_val:
+                min_val = abs(val)
+                ret_val[0], ret_val[1], ret_val[2] = base, arr[left], arr[right]
+                if min_val == 0:
+                    return ret_val
+            elif val < 0:
                 left += 1
-            
-            elif tmp > 0:
+            else:
                 right -= 1
 
-            # tmp == 0
-            else:
-                result = [solutions[i], solutions[left], solutions[right]]
-                return result
+    return ret_val
 
-    return result
-
-result = solve(solutions)
-print(*result)
+input()
+arr = sorted(list(map(int, input().split())))
+print(*solve(arr))
