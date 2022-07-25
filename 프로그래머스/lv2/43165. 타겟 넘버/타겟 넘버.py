@@ -1,14 +1,21 @@
-def dfs(nums, i, n, t):
-    ret = 0
-    if i==len(nums):
-        if n==t: return 1
-    
-        else: return 0
-    
-    ret += dfs(nums, i+1, n+nums[i], t)
-    ret += dfs(nums, i+1, n-nums[i], t)
-    return ret
+answer = 0 
 
+def dfs(idx, tmp, numbers, target):
+    global answer
+    
+    # base statement
+    if len(numbers) == idx:
+        if tmp == target: # 목표 값에 도달한 경우.
+            answer += 1
+            return
+        
+        return
+    
+    dfs(idx + 1, tmp + numbers[idx], numbers, target)
+    dfs(idx + 1, tmp - numbers[idx], numbers, target)    
+    
 def solution(numbers, target):
-    answer = dfs(numbers, 0, 0, target)
+    global answer
+    dfs(0, 0, numbers, target)
+    
     return answer
